@@ -1,0 +1,23 @@
+[build]
+  command = "npm run export"
+  publish = "out"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Form submission configuration
+[functions]
+  directory = "netlify/functions"
+
+# Email notifications for form submissions
+[[form]]
+  name = "contact"
+  honeypot = "bot-field"
+  # Submit notifications are configured in Netlify UI
+
+[[form]]
+  name = "quote"
+  honeypot = "bot-field"
+  # Submit notifications are configured in Netlify UI
