@@ -807,9 +807,7 @@ const GalleryPage = () => {
     // Generate placeholder URLs for a staggered/masonry look
     const staggeredItems = galleryItems.map((item, index) => ({
         ...item,
-        // Calculate grid span rows based on ratio for masonry effect
-        // We use a row height unit of 10px, so item height / 10px
-        span: Math.max(20, Math.round(150 * item.ratio)),
+        // Pass aspect ratio for CSS variable
     }));
 
     return (
@@ -829,8 +827,7 @@ const GalleryPage = () => {
                             <div 
                                 key={index} 
                                 className="gallery-item group relative overflow-hidden rounded-2xl shadow-lg bg-gray-100 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:-translate-y-1"
-                                // The magic formula: grid-row-end: span [height] / [row unit]
-                                style={{ gridRowEnd: `span ${item.span}` }} 
+                                style={{ '--aspect-ratio': item.ratio }}
                             >
                                 
                                 {/* Image with object-fit: cover for aspect ratio handling */}
@@ -1142,18 +1139,20 @@ export default function App() {
       .masonry-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          grid-auto-rows: 10px; /* Crucial for aspect ratio based sizing, sets row height unit */
+          grid-auto-rows: auto;
           gap: 1.5rem; /* 24px gap */
       }
       .gallery-item {
           /* We calculate row span in JSX/JS based on image aspect ratio, then apply grid-row-end: span X */
           margin-bottom: 0 !important;
           overflow: hidden;
+          aspect-ratio: var(--aspect-ratio, 1);
       }
       .gallery-item img {
           display: block; 
           width: 100%;
-          height: auto;
+          height: 100%;
+          object-fit: cover;
       }
 
       /* Responsive Adjustments (Matching prompt specifications) */
